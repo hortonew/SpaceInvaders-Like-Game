@@ -17,41 +17,23 @@ class Player(physicalobject.PhysicalObject):
         self.right = key.D
         self.down = key.S
 
-    def on_key_press(self, symbol, modifiers):    
-        if symbol == self.up:
-            self.keys['up'] = True
-        elif symbol == self.left:
-            self.keys['left'] = True
-        elif symbol == self.right:
-            self.keys['right'] = True
-        elif symbol == self.down:
-        	self.keys['down'] = True
-
-    def on_key_release(self, symbol, modifiers):
-        if symbol == self.up:
-            self.keys['up'] = False
-        elif symbol == self.left:
-            self.keys['left'] = False
-        elif symbol == self.right:
-            self.keys['right'] = False
-        elif symbol == self.down:
-        	self.keys['down'] = False
+        self.key_handler = key.KeyStateHandler()
 
     def update(self, dt):
 		super(Player, self).update(dt)
 
-		if self.keys['up']:
+		if self.key_handler[self.up]:
 			force_y = self.thrust * dt
 			self.velocity_y += force_y
 
-		if self.keys['down']:
+		if self.key_handler[self.down]:
 			force_y = self.thrust * dt
 			self.velocity_y -= force_y
 
-		if self.keys['left']:
+		if self.key_handler[self.left]:
 			force_x = self.thrust * dt
 			self.velocity_x -= force_x
 
-		if self.keys['right']:
+		if self.key_handler[self.right]:
 			force_x = self.thrust * dt
 			self.velocity_x += force_x

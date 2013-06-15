@@ -14,7 +14,7 @@ game_objects = []
 game_objects.append(player_ship)
 
 # Tell the main window that the player object responds to events
-game_window.push_handlers(player_ship)
+game_window.push_handlers(player_ship.key_handler)
 
 
 @game_window.event
