@@ -1,18 +1,20 @@
 import pyglet
 from classes import resources, player
+from classes.enemy import *
+from config import *
 
-game_window = pyglet.window.Window(1024,768)
+game_window = pyglet.window.Window(*WINDOW_SIZE)
 
 main_batch = pyglet.graphics.Batch()
 
 # Initialize the player sprite
 player_ship = player.Player(x=400, y=300, batch=main_batch)
 
-invader1 = pyglet.sprite.Sprite(img=resources.invader1_image, x=400, y=700, batch=main_batch)
-
-game_objects = []
-game_objects.append(player_ship)
-
+#invader1 = Enemy(x=400, y=700, batch=main_batch)
+game_objects = [player_ship]
+eg = EnemyGenerator(4, main_batch).enemies
+for e in eg:
+    game_objects.append(e)
 # Tell the main window that the player object responds to events
 game_window.push_handlers(player_ship.key_handler)
 

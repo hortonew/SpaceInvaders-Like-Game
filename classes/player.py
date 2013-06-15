@@ -7,7 +7,7 @@ class Player(physicalobject.PhysicalObject):
     def __init__(self, *args, **kwargs):
     	super(Player, self).__init__(img=resources.player_image, *args, **kwargs)
 
-        self.thrust = 300.0
+        self.thrust = 1500.0
 
         self.keys = dict(left=False, right=False, up=False, down=False)
 
