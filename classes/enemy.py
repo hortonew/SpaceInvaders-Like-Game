@@ -2,7 +2,6 @@ import physicalobject
 import resources
 from config import *
 
-
 class EnemyGroup(object):
     def __init__(self, number_of_enemies, batch):
         self.enemies = []
@@ -14,6 +13,7 @@ class EnemyGroup(object):
         self.x = self.left_x_bound
         self.y = self.top_y_bound
         self.dead = False
+        self.new_objects = []
 
         # make sure that when you generate enemies,
         # you generate them in the correct configuration

@@ -1,6 +1,6 @@
 from pyglet.window import key
-import physicalobject, resources
-from config import PLAYER_THRUST, PLAYER_LIVES
+import physicalobject, resources, bullet
+from config import PLAYER_THRUST, PLAYER_LIVES, PLAYER_BULLET_SPEED
 
 class Player(physicalobject.PhysicalObject):
 
@@ -9,6 +9,7 @@ class Player(physicalobject.PhysicalObject):
 
 		self.thrust = PLAYER_THRUST
 		self.lives = PLAYER_LIVES
+		self.bullet_speed = PLAYER_BULLET_SPEED
 
 		self.keys = dict(left=False, right=False, up=False, down=False)
 
@@ -17,6 +18,7 @@ class Player(physicalobject.PhysicalObject):
 		self.left = key.A
 		self.right = key.D
 		self.down = key.S
+		self.space = key.SPACE
 
 		self.key_handler = key.KeyStateHandler()
 
@@ -29,6 +31,15 @@ class Player(physicalobject.PhysicalObject):
 		self.y = 300
 		self.dead = False
 		self.velocity_x, self.velocity_y = 0.0, 0.0
+
+	def fire(self):
+		bullet_x = self.x
+		bullet_y = self.y + 10
+		new_bullet = bullet.Bullet(bullet_x, bullet_y, batch=self.batch)
+		bullet_vy = self.bullet_speed
+		new_bullet.velocity_y = bullet_vy
+
+		self.new_objects.append(new_bullet)
 
 	def update(self, dt):
 		super(Player, self).update(dt)
@@ -48,3 +59,6 @@ class Player(physicalobject.PhysicalObject):
 		if self.key_handler[self.right]:
 			force_x = self.thrust * dt
 			self.velocity_x += force_x
+
+		if self.key_handler[self.space]:
+			self.fire()

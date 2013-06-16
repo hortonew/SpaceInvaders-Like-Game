@@ -8,6 +8,7 @@ class PhysicalObject(pyglet.sprite.Sprite):
 
 		self.dead = False
 		self.velocity_x, self.velocity_y = 0.0, 0.0
+		self.new_objects = []
 
 	def update(self, dt):
 		self.x += self.velocity_x * dt
@@ -40,7 +41,11 @@ class PhysicalObject(pyglet.sprite.Sprite):
 		return (actual_distance <= collision_distance)
 
 	def handle_collision_with(self, other_object):
-		self.dead = True
+		#check if objects are the same type: if not, they die
+		if other_object.__class__ == self.__class__:
+			self.dead = False
+		else:
+			self.dead = True
 
 	def delete(self):
 		super(PhysicalObject, self).delete()

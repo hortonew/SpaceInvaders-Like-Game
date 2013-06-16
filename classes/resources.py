@@ -1,6 +1,5 @@
 import pyglet
 
-
 def center_image(image):
     """Sets an image's anchor point to its center"""
     image.anchor_x = image.width/2
@@ -11,7 +10,9 @@ pyglet.resource.reindex()
 
 player_image = pyglet.resource.image("ship.png")
 invader1_image = pyglet.resource.image("invader.png")
+bullet_image = pyglet.resource.image("bullet.png")
 
 
 center_image(player_image)
 center_image(invader1_image)
+center_image(bullet_image)
