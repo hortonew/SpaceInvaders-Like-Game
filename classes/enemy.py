@@ -26,6 +26,9 @@ class EnemyGroup(object):
                 next_enemy_x += ENEMY_MARGIN[0]
             y_offset -= int(ENEMY_MARGIN[1])
 
+    def remove(self, e):
+        self.enemies.remove(e)
+
     def update(self, dt):
         rightmost_enemy_x = max([enemy.x for enemy in self.enemies])
         leftmost_enemy_x = min([enemy.x for enemy in self.enemies])
@@ -46,9 +49,6 @@ class Enemy(physicalobject.PhysicalObject):
         super(Enemy, self).__init__(img=resources.invader1_image, *args, **kwargs)
         self.direction = 'right'
         self.dead = False
-
-    def delete(self):
-        super(Enemy, self).delete()
 
     def update(self, dt):
         super(Enemy, self).update(dt)

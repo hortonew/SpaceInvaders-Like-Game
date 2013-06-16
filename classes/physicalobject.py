@@ -41,3 +41,6 @@ class PhysicalObject(pyglet.sprite.Sprite):
 
 	def handle_collision_with(self, other_object):
 		self.dead = True
+
+	def delete(self):
+		super(PhysicalObject, self).delete()
