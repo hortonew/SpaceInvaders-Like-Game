@@ -14,8 +14,8 @@ class EnemyGroup(object):
         self.x = self.left_x_bound
         self.y = self.top_y_bound
 
-
-        #make sure that when you generate enemies, you generate them in the correct configuration
+        # make sure that when you generate enemies,
+        # you generate them in the correct configuration
         y_offset = self.top_y_bound
         for i in range(0, number_of_enemies):
             next_enemy_x = int(self.left_x_bound)
@@ -24,8 +24,6 @@ class EnemyGroup(object):
                 self.enemies.append(Enemy(x=next_enemy_x, y=next_enemy_y, batch=batch))
                 next_enemy_x += ENEMY_MARGIN[0]
             y_offset -= int(ENEMY_MARGIN[1])
-        for e in self.enemies:
-            print e.x, e.y
 
     def update(self, dt):
         rightmost_enemy_x = max([enemy.x for enemy in self.enemies])
@@ -50,6 +48,6 @@ class Enemy(physicalobject.PhysicalObject):
     def update(self, dt):
         super(Enemy, self).update(dt)
         if self.direction is 'right':
-            self.x += 10
+            self.x += ENEMY_SPEED
         else:
-            self.x -= 10
+            self.x -= ENEMY_SPEED

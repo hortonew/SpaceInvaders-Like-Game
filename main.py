@@ -9,7 +9,7 @@ main_batch = pyglet.graphics.Batch()
 # Initialize the player sprite
 player_ship = player.Player(x=400, y=300, batch=main_batch)
 
-eg = EnemyGroup(20, main_batch)
+eg = EnemyGroup(NUM_ENEMIES, main_batch)
 game_objects = [player_ship, eg]
 
 

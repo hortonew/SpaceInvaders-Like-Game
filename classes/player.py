@@ -1,13 +1,12 @@
-import math
 from pyglet.window import key
 import physicalobject, resources
-
+from config import PLAYER_THRUST
 class Player(physicalobject.PhysicalObject):
 
     def __init__(self, *args, **kwargs):
     	super(Player, self).__init__(img=resources.player_image, *args, **kwargs)
 
-        self.thrust = 1500.0
+        self.thrust = PLAYER_THRUST
 
         self.keys = dict(left=False, right=False, up=False, down=False)
 
