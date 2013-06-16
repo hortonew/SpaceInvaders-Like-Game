@@ -1,6 +1,7 @@
 from pyglet.window import key
 import physicalobject, resources
 from config import PLAYER_THRUST
+
 class Player(physicalobject.PhysicalObject):
 
     def __init__(self, *args, **kwargs):
@@ -10,13 +11,16 @@ class Player(physicalobject.PhysicalObject):
 
         self.keys = dict(left=False, right=False, up=False, down=False)
 
-        #Place to key mappings
+        # Place for key mappings
         self.up = key.W
         self.left = key.A
         self.right = key.D
         self.down = key.S
 
         self.key_handler = key.KeyStateHandler()
+
+    def delete(self):
+    	super(Player, self).delete()
 
     def update(self, dt):
 		super(Player, self).update(dt)

@@ -1,10 +1,12 @@
 import pyglet
+import util
 
 class PhysicalObject(pyglet.sprite.Sprite):
 
 	def __init__(self, *args, **kwargs):
 		super(PhysicalObject, self).__init__(*args, **kwargs)
 
+		self.dead = False
 		self.velocity_x, self.velocity_y = 0.0, 0.0
 
 	def update(self, dt):
@@ -30,3 +32,12 @@ class PhysicalObject(pyglet.sprite.Sprite):
 			self.y = max_y
 		elif self.y > max_y:
 			self.y = min_y
+
+	def collides_with(self, other_object):
+		collision_distance = self.image.width/2 + other_object.image.width/2
+		actual_distance = util.distance(self.position, other_object.position)
+
+		return (actual_distance <= collision_distance)
+
+	def handle_collision_with(self, other_object):
+		self.dead = True

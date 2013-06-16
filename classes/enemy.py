@@ -13,6 +13,7 @@ class EnemyGroup(object):
         self.bottom_y_bound = 200
         self.x = self.left_x_bound
         self.y = self.top_y_bound
+        self.dead = False
 
         # make sure that when you generate enemies,
         # you generate them in the correct configuration
@@ -44,6 +45,10 @@ class Enemy(physicalobject.PhysicalObject):
     def __init__(self, *args, **kwargs):
         super(Enemy, self).__init__(img=resources.invader1_image, *args, **kwargs)
         self.direction = 'right'
+        self.dead = False
+
+    def delete(self):
+        super(Enemy, self).delete()
 
     def update(self, dt):
         super(Enemy, self).update(dt)
