@@ -1,13 +1,16 @@
 import pyglet
 import util
+from config import SPRITE_SCALE
 
 class PhysicalObject(pyglet.sprite.Sprite):
 
 	def __init__(self, *args, **kwargs):
 		super(PhysicalObject, self).__init__(*args, **kwargs)
+		print self.image
 
 		self.dead = False
 		self.velocity_x, self.velocity_y = 0.0, 0.0
+		self.scale = SPRITE_SCALE
 		self.new_objects = []
 
 	def update(self, dt):

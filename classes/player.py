@@ -35,11 +35,8 @@ class Player(physicalobject.PhysicalObject):
 	def fire(self):
 		bullet_x = self.x
 		bullet_y = self.y + 10
-		new_bullet = bullet.Bullet(bullet_x, bullet_y, batch=self.batch)
-		bullet_vy = self.bullet_speed
-		new_bullet.velocity_y = bullet_vy
-
-		self.new_objects.append(new_bullet)
+		b = bullet.Bullet(PLAYER_BULLET_SPEED, bullet_x, bullet_y, batch=self.batch)
+		self.new_objects.append(b)
 
 	def update(self, dt):
 		super(Player, self).update(dt)

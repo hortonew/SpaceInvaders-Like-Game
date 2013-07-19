@@ -1,9 +1,11 @@
 import physicalobject
 import resources
+from pyglet.image import Animation
+from pyglet.sprite import Sprite
 from config import *
 
 class EnemyGroup(object):
-    def __init__(self, number_of_enemies, batch):
+    def __init__(self, number_of_enemies, enemy_type, batch):
         self.enemies = []
         self.number_of_enemies = number_of_enemies
         self.left_x_bound = 200
@@ -22,7 +24,7 @@ class EnemyGroup(object):
             next_enemy_x = int(self.left_x_bound)
             while not next_enemy_x >= self.right_x_bound and len(self.enemies) < self.number_of_enemies:
                 next_enemy_y = y_offset
-                self.enemies.append(Enemy(x=next_enemy_x, y=next_enemy_y, batch=batch))
+                self.enemies.append(Enemy(resources.enemy_resources[enemy_type], x=next_enemy_x, y=next_enemy_y, batch=batch))
                 next_enemy_x += ENEMY_MARGIN[0]
             y_offset -= int(ENEMY_MARGIN[1])
 
@@ -44,14 +46,15 @@ class EnemyGroup(object):
             enemy.update(dt)
 
 
-class Enemy(physicalobject.PhysicalObject):
-    def __init__(self, *args, **kwargs):
-        super(Enemy, self).__init__(img=resources.invader1_image, *args, **kwargs)
+class Enemy(Sprite):
+    def __init__(self, seq, *args, **kwargs):
+        super(Enemy, self).__init__(img=Animation.from_image_sequence(seq, ENEMY_ANIM_SPEED), *args, **kwargs)
         self.direction = 'right'
         self.dead = False
+	self.scale = SPRITE_SCALE 
 
     def update(self, dt):
-        super(Enemy, self).update(dt)
+        #super(Enemy, self).update(dt)
         if self.direction is 'right':
             self.x += ENEMY_SPEED
         else:
