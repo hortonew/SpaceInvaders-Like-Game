@@ -1,7 +1,8 @@
 from classes.menus import MainMenu
 from config import *
 from classes import player
-from classes.enemy import EnemyGroup
+from classes.bullet import Bullet
+from classes.enemy import EnemyGroup, Enemy
 from classes.menus import MainMenu
 from classes.gameitem import GameItem
 import pyglet
@@ -24,12 +25,20 @@ class Game(object):
         self.graphics_batch.draw()
 
     def update(self, dt):
-        # update all game objects
         for obj in self.objects:
+            # todo: seriously clean up this hackjob
+            if type(obj) == Bullet:
+                for oo in self.objects:
+                    if type(oo) == EnemyGroup:
+                        for e in oo.enemies:
+                            if obj.collides_with(e):
+                                obj.remove_from_game = True
+                                oo.enemies.remove(e)
+                                e.clean_up()
+            # update all game objects
             obj.update(dt)
 
         for to_remove in [obj for obj in self.objects if obj.remove_from_game]:
-            print to_remove 
             to_remove.clean_up()
             self.objects.remove(to_remove)
             del(to_remove)

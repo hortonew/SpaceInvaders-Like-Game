@@ -40,8 +40,8 @@ class PhysicalObject(GameItem):
             self.sprite.y = min_y
 
     def collides_with(self, other_object):
-        collision_distance = self.image.width/2 + other_object.image.width/2
-        actual_distance = util.distance(self.position, other_object.position)
+        collision_distance = self.sprite.width/2 + other_object.sprite.width/2
+        actual_distance = util.distance(self.sprite.position, other_object.sprite.position)
 
         return (actual_distance <= collision_distance)
 

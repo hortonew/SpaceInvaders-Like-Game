@@ -57,3 +57,6 @@ class Enemy(physicalobject.PhysicalObject):
             self.sprite.x += ENEMY_SPEED
         else:
             self.sprite.x -= ENEMY_SPEED
+
+    def clean_up(self):
+        self.sprite.delete()
