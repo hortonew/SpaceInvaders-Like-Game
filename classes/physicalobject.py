@@ -48,6 +48,6 @@ class PhysicalObject(GameItem):
     def handle_collision_with(self, other_object):
         #check if objects are the same type: if not, they die
         if other_object.__class__ == self.__class__:
-            self.dead = False
+            self.remove_from_game = False
         else:
-            self.dead = True
+            pyglet.clock.schedule_once(self.remove, 0)

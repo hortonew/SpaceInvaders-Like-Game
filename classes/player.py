@@ -22,9 +22,9 @@ class Player(physicalobject.PhysicalObject):
 
         self.win.push_handlers(self.on_key_press, self.on_key_release)
 
-    def remove(self):
-        #todo: call gameitem's remove
+    def clean_up(self):
         self.win.remove_handlers(self.on_key_press, self.on_key_release)
+        self.sprite.delete()
 
     def respawn(self):
         self.lives -= 1
