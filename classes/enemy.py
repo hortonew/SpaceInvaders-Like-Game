@@ -2,6 +2,7 @@ import physicalobject
 import resources
 from pyglet.image import Animation
 from pyglet.sprite import Sprite
+from gameitem import GameItem
 from config import *
 
 class EnemyGroup(object):
@@ -14,8 +15,7 @@ class EnemyGroup(object):
         self.bottom_y_bound = 200
         self.x = self.left_x_bound
         self.y = self.top_y_bound
-        self.dead = False
-        self.new_objects = []
+        self.remove_from_game = False
 
         # make sure that when you generate enemies,
         # you generate them in the correct configuration
@@ -32,30 +32,28 @@ class EnemyGroup(object):
         self.enemies.remove(e)
 
     def update(self, dt):
-        rightmost_enemy_x = max([enemy.x for enemy in self.enemies])
-        leftmost_enemy_x = min([enemy.x for enemy in self.enemies])
-        if rightmost_enemy_x >= WINDOW_SIZE[0]:
+        rightmost_enemy_x = max([enemy.sprite.x for enemy in self.enemies])
+        leftmost_enemy_x = min([enemy.sprite.x for enemy in self.enemies])
+        if rightmost_enemy_x >= WINDOW_SIZE[0] - 40:
             for enemy in self.enemies:
                 enemy.direction = 'left'
-                enemy.y -= ENEMY_MARGIN[1]
+                enemy.sprite.y -= ENEMY_MARGIN[1]
         elif leftmost_enemy_x <= 0:
             for enemy in self.enemies:
                 enemy.direction = 'right'
-                enemy.y -= ENEMY_MARGIN[1]
+                enemy.sprite.y -= ENEMY_MARGIN[1]
         for enemy in self.enemies:
             enemy.update(dt)
 
 
-class Enemy(Sprite):
+class Enemy(physicalobject.PhysicalObject):
     def __init__(self, seq, *args, **kwargs):
-        super(Enemy, self).__init__(img=Animation.from_image_sequence(seq, ENEMY_ANIM_SPEED), *args, **kwargs)
+        super(Enemy, self).__init__(Sprite(Animation.from_image_sequence(seq, ENEMY_ANIM_SPEED), *args, **kwargs))
         self.direction = 'right'
-        self.dead = False
-	self.scale = SPRITE_SCALE 
 
     def update(self, dt):
         #super(Enemy, self).update(dt)
         if self.direction is 'right':
-            self.x += ENEMY_SPEED
+            self.sprite.x += ENEMY_SPEED
         else:
-            self.x -= ENEMY_SPEED
+            self.sprite.x -= ENEMY_SPEED
