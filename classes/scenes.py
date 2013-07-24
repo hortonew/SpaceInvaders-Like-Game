@@ -6,7 +6,6 @@ class MainMenu(GameItem):
     
     def __init__(self):
         GameItem.__init__(self)
-        self.new_objects = []
         self.labels = []
         self.labels.append(pyglet.text.Label('SPACE INVADERS-LIKE GAME!', 
                                         font_name='sans-serif',

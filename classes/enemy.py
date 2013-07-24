@@ -12,7 +12,7 @@ class EnemyGroup(GameItem):
         self.number_of_enemies = number_of_enemies
         self.left_x_bound = 200
         self.right_x_bound = 800
-        self.top_y_bound = 700
+        self.top_y_bound = 650
         self.bottom_y_bound = 200
         self.x = self.left_x_bound
         self.y = self.top_y_bound
@@ -21,13 +21,15 @@ class EnemyGroup(GameItem):
         # make sure that when you generate enemies,
         # you generate them in the correct configuration
         y_offset = self.top_y_bound
+        row = 0
         for i in range(0, number_of_enemies):
             next_enemy_x = int(self.left_x_bound)
             while not next_enemy_x >= self.right_x_bound and len(self.enemies) < self.number_of_enemies:
                 next_enemy_y = y_offset
-                self.enemies.append(Enemy(resources.enemy_resources[enemy_type], x=next_enemy_x, y=next_enemy_y, batch=batch))
+                self.enemies.append(Enemy(resources.enemy_resources[enemy_type], row=row, x=next_enemy_x, y=next_enemy_y, batch=batch))
                 next_enemy_x += ENEMY_MARGIN[0]
             y_offset -= int(ENEMY_MARGIN[1])
+            row += 1
 
 
     def remove_enemy(self, e):
@@ -57,9 +59,10 @@ class EnemyGroup(GameItem):
 
 
 class Enemy(physicalobject.PhysicalObject):
-    def __init__(self, seq, *args, **kwargs):
+    def __init__(self, seq, row, *args, **kwargs):
         super(Enemy, self).__init__(Sprite(Animation.from_image_sequence(seq, ENEMY_ANIM_SPEED), *args, **kwargs))
         self.direction = 'right'
+        self.row = row
         self.game.objects.append(self)
 
     def update(self, dt):

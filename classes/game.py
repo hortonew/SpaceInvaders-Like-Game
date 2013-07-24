@@ -4,6 +4,7 @@ from classes.bullet import Bullet
 from classes.enemy import EnemyGroup, Enemy
 from classes.scenes import MainMenu, WinScreen
 from classes.gameitem import GameItem
+from classes.hud import Score
 import pyglet
 
 
@@ -34,6 +35,9 @@ class Game(object):
                     if obj.collides_with(enemy):
                         obj.handle_collision_with(enemy)
                         enemy.handle_collision_with(obj)
+                        # wonky score function for that arcade feel
+                        self.score.update_score(self.score.score + (MYSTERY_SCORE_NUMBER * (enemy.row + 1)))
+
             # update all game objects
             obj.update(dt)
 
@@ -45,11 +49,14 @@ class Game(object):
     def start(self, _):
         # Initialize the player sprite
         self.player = player.Player(x=WINDOW_SIZE[0]//2, y=100, batch=self.graphics_batch)
+        self.score = Score()
         self.objects.append(self.player)
         self.objects.append(EnemyGroup(NUM_ENEMIES, 0, self.graphics_batch))
+        self.objects.append(self.score)
 
     def win_game(self):
         pyglet.clock.schedule_once(self.player.remove, 0)
+        pyglet.clock.schedule_once(self.score.remove, 0)
         self.add(WinScreen())
     
     def main(self):
