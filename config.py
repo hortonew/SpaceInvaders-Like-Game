@@ -8,3 +8,24 @@ PLAYER_LIVES = 3
 PLAYER_BULLET_SPEED = 700.0
 SPRITE_SCALE = 2 
 MYSTERY_SCORE_NUMBER = 7
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        }
+    },
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['console']
+    },
+}
+
+import logging.config
+logging.config.dictConfig(LOGGING)

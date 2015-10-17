@@ -2,9 +2,9 @@ from config import *
 from classes import player
 from classes.bullet import Bullet
 from classes.enemy import EnemyGroup, Enemy
-from classes.scenes import MainMenu, WinScreen
+from classes.scenes import MainMenu, WinScreen, LoseScreen
 from classes.gameitem import GameItem
-from classes.hud import Score
+from classes.hud import Score, Lives
 import pyglet
 
 
@@ -15,6 +15,7 @@ class Game(object):
         self.graphics_batch = pyglet.graphics.Batch()
         self.objects = []
         self.win.on_draw = self.on_draw
+        self.lost_game = False
         GameItem.game = self
 
     def add(self, new_game_object):
@@ -49,15 +50,25 @@ class Game(object):
     def start(self, _):
         # Initialize the player sprite
         self.player = player.Player(x=WINDOW_SIZE[0]//2, y=100, batch=self.graphics_batch)
+        self.lives = Lives(self.player.lives)
         self.score = Score()
+        self.enemy_group = EnemyGroup(NUM_ENEMIES, 0, self.graphics_batch)
         self.objects.append(self.player)
-        self.objects.append(EnemyGroup(NUM_ENEMIES, 0, self.graphics_batch))
+        self.objects.append(self.enemy_group)
         self.objects.append(self.score)
+        self.objects.append(self.lives)
 
     def win_game(self):
-        pyglet.clock.schedule_once(self.player.remove, 0)
-        pyglet.clock.schedule_once(self.score.remove, 0)
-        self.add(WinScreen())
+        if not self.lost_game:
+            for o in self.objects:
+                pyglet.clock.schedule_once(o.remove, 0)
+            self.add(WinScreen())
+
+    def lose_game(self):
+        self.lost_game = True
+        for o in self.objects:
+            pyglet.clock.schedule_once(o.remove, 0)
+        self.add(LoseScreen())
     
     def main(self):
         self.add(MainMenu())

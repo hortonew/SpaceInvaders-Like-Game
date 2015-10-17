@@ -1,9 +1,12 @@
+import logging
 import physicalobject
 import resources
 from pyglet.image import Animation
 from pyglet.sprite import Sprite
 from gameitem import GameItem
 from config import *
+
+logger = logging.getLogger(__name__)
 
 class EnemyGroup(GameItem):
     def __init__(self, number_of_enemies, enemy_type, batch):
@@ -31,6 +34,10 @@ class EnemyGroup(GameItem):
             y_offset -= int(ENEMY_MARGIN[1])
             row += 1
 
+    def reset_position(self):
+        logger.info("reset position of EnemyGroup")
+        for enemy in self.enemies:
+            enemy.sprite.y += 400
 
     def remove_enemy(self, e):
         self.enemies.remove(e)

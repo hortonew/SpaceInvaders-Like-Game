@@ -33,12 +33,6 @@ class PhysicalObject(GameItem):
         elif self.sprite.x > max_x:
             self.sprite.x = min_x
 
-        #if object moves off screen vertically, put it on the opposite side of the screen
-        #if self.sprite.y < min_y:
-        #    self.sprite.y = max_y
-        #elif self.sprite.y > max_y:
-        #    self.sprite.y = min_y
-
     def collides_with(self, other_object):
         collision_distance = self.sprite.width/2 + other_object.sprite.width/2
         actual_distance = util.distance(self.sprite.position, other_object.sprite.position)

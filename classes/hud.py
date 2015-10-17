@@ -33,3 +33,33 @@ class Score(GameItem):
 
     def clean_up(self):
         self.label.delete()
+
+class Lives(GameItem):
+    def __init__(self, lives):
+        GameItem.__init__(self)
+        self.lives = lives
+        self.label = pyglet.text.Label("lives {}".format(self.lives),
+                                        font_name='sans-serif',
+                                        font_size=26,
+                                        x=WINDOW_SIZE[0] - 900,
+                                        y=WINDOW_SIZE[1] - 50,
+                                        anchor_x='center',
+                                        anchor_y='center',
+                                        batch=self.game.graphics_batch)
+
+    def update_lives(self, new_lives):
+        # find number of digits, pad with necessary number of zeros
+        self.lives = new_lives
+        digits = len(str(new_lives))
+        self.label.text = "lives {}".format(self.lives)
+        self.draw()
+
+    def update(self, dt):
+        pass
+
+
+    def draw(self):
+        self.label.draw()
+
+    def clean_up(self):
+        self.label.delete()
