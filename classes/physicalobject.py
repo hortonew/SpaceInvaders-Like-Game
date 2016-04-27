@@ -5,7 +5,7 @@ from config import SPRITE_SCALE
 
 class PhysicalObject(GameItem):
 
-    def __init__(self, sprite):
+    def __init__(self, sprite, parent=None):
         GameItem.__init__(self)
         self.velocity_x, self.velocity_y = 0.0, 0.0
         self.scale = SPRITE_SCALE
@@ -13,6 +13,7 @@ class PhysicalObject(GameItem):
         self.sprite.scale = SPRITE_SCALE
         self.sprite.x = self.sprite.x
         self.sprite.y = self.sprite.y
+        self.parent = parent
 
 
     def update(self, dt):
@@ -42,6 +43,11 @@ class PhysicalObject(GameItem):
     def handle_collision_with(self, other_object):
         #check if objects are the same type: if not, they die
         if other_object.__class__ == self.__class__:
+            self.remove_from_game = False
+        # check who created the objects, bullets from enemies shouldn't kill other enemies
+        elif other_object.parent == self.__class__:
+            self.remove_from_game = False
+        elif other_object.__class__ == self.parent:
             self.remove_from_game = False
         else:
             pyglet.clock.schedule_once(self.remove, 0)

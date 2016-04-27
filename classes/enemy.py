@@ -1,9 +1,9 @@
 import logging
-import physicalobject
 import resources
 from pyglet.image import Animation
 from pyglet.sprite import Sprite
 from gameitem import GameItem
+import physicalobject, bullet
 from config import *
 
 logger = logging.getLogger(__name__)
@@ -29,15 +29,23 @@ class EnemyGroup(GameItem):
             next_enemy_x = int(self.left_x_bound)
             while not next_enemy_x >= self.right_x_bound and len(self.enemies) < self.number_of_enemies:
                 next_enemy_y = y_offset
-                self.enemies.append(Enemy(resources.enemy_resources[enemy_type], row=row, x=next_enemy_x, y=next_enemy_y, batch=batch))
+                self.enemies.append(Enemy(resources.enemy_resources[enemy_type],
+                                          row=row,
+                                          x=next_enemy_x,
+                                          y=next_enemy_y,
+                                          batch=batch))
                 next_enemy_x += ENEMY_MARGIN[0]
             y_offset -= int(ENEMY_MARGIN[1])
             row += 1
 
     def reset_position(self):
         logger.info("reset position of EnemyGroup")
+        logger.info("self.enemies[0].y {}".format(self.enemies[0].sprite.y))
+        diff = self.top_y_bound - self.enemies[0].sprite.y
         for enemy in self.enemies:
-            enemy.sprite.y += 400
+            # find the difference between the first enemy's y and the top y bound
+            # add that to enemy sprite y
+            enemy.sprite.y += diff
 
     def remove_enemy(self, e):
         self.enemies.remove(e)
@@ -67,7 +75,7 @@ class EnemyGroup(GameItem):
 
 class Enemy(physicalobject.PhysicalObject):
     def __init__(self, seq, row, *args, **kwargs):
-        super(Enemy, self).__init__(Sprite(Animation.from_image_sequence(seq, ENEMY_ANIM_SPEED), *args, **kwargs))
+        super(Enemy, self).__init__(sprite=Sprite(Animation.from_image_sequence(seq, ENEMY_ANIM_SPEED), *args, **kwargs))
         self.direction = 'right'
         self.row = row
         self.game.objects.append(self)
@@ -78,6 +86,17 @@ class Enemy(physicalobject.PhysicalObject):
             self.sprite.x += ENEMY_SPEED
         else:
             self.sprite.x -= ENEMY_SPEED
+
+    def fire(self):
+        logger.info("shot a bullet!")
+        bullet_x = self.sprite.x
+        bullet_y = self.sprite.y - 20
+        b = bullet.Bullet(ENEMY_BULLET_SPEED,
+                          bullet_x,
+                          bullet_y,
+                          batch=self.game.graphics_batch,
+                          parent=type(self))
+        self.game.objects.append(b)
 
     def clean_up(self):
         self.sprite.delete()
