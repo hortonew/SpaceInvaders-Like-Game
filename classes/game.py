@@ -1,3 +1,5 @@
+import logging
+import random
 from config import *
 from classes import player
 from classes.bullet import Bullet
@@ -7,6 +9,7 @@ from classes.gameitem import GameItem
 from classes.hud import Score, Lives
 import pyglet
 
+logger = logging.getLogger(__name__)
 
 class Game(object):
 
@@ -32,6 +35,9 @@ class Game(object):
         for obj in self.objects:
             # todo: seriously clean up this hackjob
             if type(obj) in [player.Player, Bullet]:
+                if type(obj) == Bullet:
+                    if self.player.collides_with(obj):
+                        self.player.handle_collision_with(obj)
                 for enemy in [oo for oo in self.objects if type(oo) == Enemy]:
                     if obj.collides_with(enemy):
                         obj.handle_collision_with(enemy)
@@ -46,6 +52,14 @@ class Game(object):
             self.objects.remove(to_remove)
             to_remove.clean_up()
             #del(to_remove)
+
+    def enemy_fire(self, dt):
+        # pick random enemy and make it fire
+        enemies = [obj for obj in self.objects if type(obj) == Enemy]
+        if enemies:
+            random_enemy = enemies[random.randint(0, len(enemies) - 1)]
+            random_enemy.fire()
+
 
     def start(self, _):
         # Initialize the player sprite
@@ -73,5 +87,6 @@ class Game(object):
     def main(self):
         self.add(MainMenu())
         pyglet.clock.schedule_interval(self.update, 1/120.0)
+        pyglet.clock.schedule_interval(self.enemy_fire, 3)
         pyglet.app.run()
         # start main menu

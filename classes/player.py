@@ -70,5 +70,7 @@ class Player(physicalobject.PhysicalObject):
             self.dx = 0
 
     def handle_collision_with(self, other_object):
-        if other_object.__class__ == Enemy:
+        if other_object.__class__ == Enemy or \
+           other_object.parent == Enemy :
+            other_object.remove_from_game = True
             self.respawn()
